@@ -66,6 +66,9 @@ Intent.ACTION_VIEW tipinde bir android Intent objesi oluşturun. Biyometrik İmz
     intent.putExtra("output_file_name", "signed_file.pdf")
     intent.putExtra("click_to_sign", true)
     intent.putExtra("verify_sign_with_id", true)
+    intent.putExtra("public_key","PUBLIC_KEY_BASE64")
+    intent.putExtra("signature_certificate","SIGNATURE_CERTIFICATE_BASE64")
+    intent.putExtra("signature_certificate_password","SIGNATURE_CERTIFICATE_PASSWORD")
 
     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
     intent.setDataAndType(uri, "application/pdf")
@@ -130,4 +133,10 @@ openssl req -x509 -sha256 -days 365 -key key.pem -in csr.csr -out certificate.pe
 4-) Create SSL identity file in PKCS12 as mentioned here
 ```text
 openssl pkcs12 -export -out signature-certificate.p12 -inkey key.pem -in certificate.pem
+```
+
+### <a id="qs-add-sdk"></a>PublicKey ve İmza sertifikasını base64'e dönüştürme
+p12_to_base64.jar'ı indirin public.pem ve signature-certificate.p12 ile aynı klasör içinde aşağıdaki java komutunu çağırın. Klasör içerisinde public-key-base64.txt ve signature-certificate-base64.txt dosyaları oluşturulacaktır.
+```text
+java -jar p12_to_base64.jar p12-path=signature-certificate.p12 public-key-path=public.pem
 ```
